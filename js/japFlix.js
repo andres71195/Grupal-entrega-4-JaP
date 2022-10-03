@@ -1,19 +1,15 @@
 const url_MOVIES = "https://japceibal.github.io/japflix_api/movies-data.json";
 let moviesArray = [];
+let filterMoviesArray = [];
+const btnBuscar = document.getElementById("btnBuscar");
+const inputBuscar = document.getElementById("inputBuscar");
+const scoreCero = '<span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+const scoreUno = '<span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+const scoreDos = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+const scoreTres = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span><span class="fa fa-star"></span>';
+const scoreCuatro = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star"></span>';
+const scoreCinco = '<span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span><span class="fa fa-star checked"></span>';
 
-// let getJSONdata = function (url) {
-//     let dataJapFlix = fetch(url);
-//     dataJapFlix.then(function (respuesta) {
-
-//         return respuesta.json();
-//     })
-//         .then((data) => {
-//             dataJapFlix = data
-//         })
-//         .catch(() => {
-//             console.log("error")
-//         })
-// }
 
 let getJSONData = function (url) {
     let result = {};
@@ -37,32 +33,88 @@ let getJSONData = function (url) {
         });
 };
 
+// Función para mostrar estrellas según vote_average
+function showStars(score) {
+    if (score < 2) {
+        return scoreCero
+    };
+
+    if (score >= 2 && score < 4) {
+        return scoreUno
+    };
+
+    if (score >= 4 && score < 6) {
+        return scoreDos
+    };
+
+    if (score >= 6 && score < 8) {
+        return scoreTres
+    };
+
+    if (score >= 8 && score < 10) {
+        return scoreCuatro
+    };
+
+    if (score == 10) {
+        return scoreCinco
+    };
+
+};
+
+function showMovieInfo() {
+    document.getElementById("offcanvasTopLabel").innerHTML = "TITULO MOVIE";
+    document.getElementById("bodyCanvas").innerHTML = "BODY MOVIE";
+    };
+
+function showMoviesList() {
+    //filtrado. Nuevo array
+    filterMoviesArray = moviesArray.filter(({ title, genres, tagline, overview }) => 
+
+        title.toLowerCase().includes(inputBuscar.value.toLowerCase()) ||
+
+        genres.some(({ name }) =>
+            name.toLowerCase().includes(inputBuscar.value.toLowerCase())) ||
+
+        tagline.toLowerCase().includes(inputBuscar.value.toLowerCase()) ||
+
+        overview.toLowerCase().includes(inputBuscar.value.toLowerCase())
+    
+    )
+    console.log(filterMoviesArray);
+    //for
+    for (let i = 0; i < filterMoviesArray.length; i++) {
+        let movie = filterMoviesArray[i];
+        let { title, tagline, vote_average } = movie; //desestructuración de movie
+
+        //agregar contenido HTML
+        document.getElementById("lista").innerHTML += `
+
+<li class="lista-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" onclick="showMovieInfo()">
+<h4><strong>${title}</strong></h4><p>${showStars(vote_average)}</p></li>
+<li class="lista-item"><p>${tagline}</p></li>
+</li>
+<hr>
+
+    `
+
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", (e) => {
-getJSONData(url_MOVIES).then(function(resultado){
-    if (resultado.status === "ok") {
-        moviesArray = resultado.data
-        // console.log(moviesArray);
-};
-});
+    getJSONData(url_MOVIES).then(function (resultado) {
+        if (resultado.status === "ok") {
+            moviesArray = resultado.data
+            // console.log(moviesArray);
+        };
+    });
 });
 
-document.getElementById("btnBuscar").addEventListener("click", (e) =>{
-    if (document.getElementById("inputBuscar").value) {
-
+btnBuscar.addEventListener("click", (e) => {
+    if (inputBuscar.value) {
+        document.getElementById("lista").innerHTML = "";    
+showMoviesList();
     }
 
 })
 
-function showMoviesList() {
-
-
-    //for
-
-    document.getElementById("lista").innerHTML += `
-
-
-
-    `
-
-}
