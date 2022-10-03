@@ -78,6 +78,12 @@ function showMovieInfo(movieId) {
 }
 };
 
+    function showMore(){
+        document.getElementById("duracion").innerHTML = `
+          <li><a class="dropdown-item" id="año" href="#">Año: ${runtime}</a></li>
+          `;
+    };
+
 function showMoviesList() {
     //filtrado. Nuevo array
     filterMoviesArray = moviesArray.filter(({ title, genres, tagline, overview }) => 
@@ -107,7 +113,7 @@ function showMoviesList() {
 <hr>
 
     `
-
+    
     }
 }
 
