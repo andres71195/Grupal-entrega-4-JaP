@@ -75,14 +75,12 @@ function showMovieInfo(movieId) {
     <p>${genre.name}</p>
     `;
 }
+document.getElementById("año").innerHTML += ` ` + `${new Date(movie.release_date).getFullYear()}`;
+document.getElementById("duracion").innerHTML += ` ` + `${movie.runtime}` + `min`;
+document.getElementById("presupuesto").innerHTML += ` ` + `$` + `${movie.budget}`;
+document.getElementById("ganancias").innerHTML += ` ` + `$` + `${movie.revenue}`;
 }
 };
-
-    function showMore(){
-        document.getElementById("duracion").innerHTML = `
-          <li><a class="dropdown-item" id="año" href="#">Año: ${runtime}</a></li>
-          `;
-    };
 
 function showMoviesList() {
     //filtrado. Nuevo array
