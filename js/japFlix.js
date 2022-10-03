@@ -61,10 +61,22 @@ function showStars(score) {
 
 };
 
-function showMovieInfo() {
-    document.getElementById("offcanvasTopLabel").innerHTML = "TITULO MOVIE";
-    document.getElementById("bodyCanvas").innerHTML = "BODY MOVIE";
-    };
+function showMovieInfo(movieId) {
+
+    const movie = filterMoviesArray.find(({id}) => id===movieId);
+    if(movie){ 
+
+
+    document.getElementById("offcanvasTopLabel").innerHTML = movie.title;
+    document.getElementById("bodyCanvas").innerHTML = movie.overview;
+    for (let i = 0; i < movie.genres.length; i++) {
+        let genre = movie.genres[i];
+    document.getElementById("bodyCanvas").innerHTML += `<hr>
+    <p>${genre.name}</p>
+    `;
+}
+}
+};
 
 function showMoviesList() {
     //filtrado. Nuevo array
@@ -80,16 +92,15 @@ function showMoviesList() {
         overview.toLowerCase().includes(inputBuscar.value.toLowerCase())
     
     )
-    console.log(filterMoviesArray);
     //for
     for (let i = 0; i < filterMoviesArray.length; i++) {
         let movie = filterMoviesArray[i];
-        let { title, tagline, vote_average } = movie; //desestructuración de movie
+        let { title, tagline, vote_average, id } = movie; //desestructuración de movie
 
         //agregar contenido HTML
         document.getElementById("lista").innerHTML += `
 
-<li class="lista-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" onclick="showMovieInfo()">
+<li class="lista-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" onclick="showMovieInfo(${id})">
 <h4><strong>${title}</strong></h4><p>${showStars(vote_average)}</p></li>
 <li class="lista-item"><p>${tagline}</p></li>
 </li>
