@@ -37,3 +37,8 @@ main {
 hr {
     color: white
 }
+
+.dropdown-toggle{
+    margin-left: 93%;
+    margin-bottom: 5px;
+}
